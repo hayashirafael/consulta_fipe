@@ -22,6 +22,7 @@ class _SignInPageState extends State<SignInPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              const Spacer(),
               SizedBox(
                 height: 150,
                 child: Image.asset(
@@ -83,7 +84,7 @@ class _SignInPageState extends State<SignInPage> {
                 'Esqueceu a senha?',
                 style: TextStyle(color: Colors.white),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 40),
               SizedBox(
                 width: 200,
                 height: 50,
@@ -102,13 +103,21 @@ class _SignInPageState extends State<SignInPage> {
                   ),
                 ),
               ),
-              const Text(
+              const Spacer(),
+              Text(
                 'Não tem uma conta?',
-                style: TextStyle(color: Colors.white),
+                style: GoogleFonts.openSans(
+                  color: Colors.white.withOpacity(.5),
+                  fontSize: 13,
+                ),
               ),
-              const Text(
+              Text(
                 'Criar conta',
-                style: TextStyle(color: Colors.white),
+                style: GoogleFonts.openSans(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 17,
+                ),
               ),
             ],
           ),
