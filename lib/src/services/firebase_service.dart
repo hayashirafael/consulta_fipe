@@ -16,16 +16,7 @@ class FirebaseService extends ChangeNotifier {
       );
       await userCredential.user!.updateDisplayName(name);
     } on FirebaseAuthException catch (e) {
-      switch (e) {
-        case value:
-          break;
-        default:
-      }
-
-      // if (e.code == 'email-already-in-use') {
-      //   error = e.code;
-      //   notifyListeners();
-      // }
+      error = e.code;
     }
   }
 }
