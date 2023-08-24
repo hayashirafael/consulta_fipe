@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>60623769962-co5ofn3cs7ekiiu6u1ql8ljk3oajod2o.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.60623769962-co5ofn3cs7ekiiu6u1ql8ljk3oajod2o</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDcwQNr27gVh12N0ZsWFOdqIT-azvkFv3U</string>
+	<key>GCM_SENDER_ID</key>
+	<string>60623769962</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.consultaFipe.RunnerTests</string>
+	<key>PROJECT_ID</key>
+	<string>consulta-fipe-34c79</string>
+	<key>STORAGE_BUCKET</key>
+	<string>consulta-fipe-34c79.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:60623769962:ios:2a14279b4b64dd82371513</string>
+</dict>
+</plist>
