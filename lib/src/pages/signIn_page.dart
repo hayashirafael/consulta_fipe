@@ -111,12 +111,15 @@ class _SignInPageState extends State<SignInPage> {
                   fontSize: 13,
                 ),
               ),
-              Text(
-                'Criar conta',
-                style: GoogleFonts.openSans(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 17,
+              InkWell(
+                onTap: () => Navigator.pushNamed(context, '/signUp'),
+                child: Text(
+                  'Criar conta',
+                  style: GoogleFonts.openSans(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 17,
+                  ),
                 ),
               ),
             ],

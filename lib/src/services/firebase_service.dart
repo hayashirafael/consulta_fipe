@@ -2,9 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class FirebaseService extends ChangeNotifier {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  String error = '';
-  cadastrarUsuario({
+  final FirebaseAuth _firebaseAuth;
+  late UserCredential? userCredential;
+
+  FirebaseService({required FirebaseAuth firebaseAuth}) : _firebaseAuth = firebaseAuth;
+
+  createUserWithEmailAndPassword({
     required String name,
     required String email,
     required String password,
@@ -16,7 +19,28 @@ class FirebaseService extends ChangeNotifier {
       );
       await userCredential.user!.updateDisplayName(name);
     } on FirebaseAuthException catch (e) {
-      error = e.code;
+      return e.code;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  signInWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      userCredential = credential;
+      // userCredential!.user!.email;
+      notifyListeners();
+    } on FirebaseAuthException catch (e) {
+      return e.code;
+    } catch (e) {
+      print(e);
     }
   }
 }
