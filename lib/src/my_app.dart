@@ -13,9 +13,11 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => FirebaseService(firebaseAuth: FirebaseAuth.instance),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 255, 255, 255)),
+          colorScheme:
+              ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 255, 255, 255)),
           useMaterial3: true,
         ),
         initialRoute: '/',

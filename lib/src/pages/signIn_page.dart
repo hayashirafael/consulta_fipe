@@ -1,5 +1,7 @@
+import 'package:consulta_fipe/src/services/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -11,8 +13,10 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  late FirebaseService firebaseService;
   @override
   Widget build(BuildContext context) {
+    firebaseService = context.read<FirebaseService>();
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 16, 23, 58),
       body: Center(
@@ -89,7 +93,6 @@ class _SignInPageState extends State<SignInPage> {
                 width: 200,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     // foregroundColor: const Color.fromARGB(255, 28, 184, 54),
                     backgroundColor: Colors.greenAccent,
@@ -101,6 +104,7 @@ class _SignInPageState extends State<SignInPage> {
                       color: Colors.black54,
                     ),
                   ),
+                  onPressed: () {},
                 ),
               ),
               const Spacer(),
