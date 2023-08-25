@@ -20,27 +20,17 @@ class _SignUpPageState extends State<SignUpPage> {
   String _nameErrorText = '';
   bool _cadastrando = false;
 
-  void alterarStatusCadastro() async {
-    setState(() {
-      _cadastrando = true;
-    });
-    await Future.delayed(const Duration(seconds: 3));
-    setState(() {
-      _cadastrando = false;
-    });
+  void _showSuccessSnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Cadastrado com sucesso!'),
+        backgroundColor: Colors.green,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    void _showSuccessSnackBar() {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Registro bem-sucedido!'),
-          backgroundColor: Colors.green,
-        ),
-      );
-    }
-
     firebaseService = Provider.of<FirebaseService>(context);
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 16, 23, 58),
@@ -52,22 +42,14 @@ class _SignUpPageState extends State<SignUpPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(
-                  height: 150,
-                  child: Image.asset(
-                    'assets/images/carro_novo_logo.png',
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(height: 30),
                 Text(
                   'Cadastro',
                   style: GoogleFonts.quicksand(
-                    fontSize: 25,
+                    fontSize: 30,
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 60),
                 TextField(
                   style: const TextStyle(
                     color: Colors.white,
@@ -125,33 +107,35 @@ class _SignUpPageState extends State<SignUpPage> {
                     onPressed: _cadastrando
                         ? null
                         : () async {
-                            alterarStatusCadastro();
+                            setState(() {
+                              _cadastrando = true;
+                            });
                             FocusManager.instance.primaryFocus?.unfocus();
                             final name = _nameController.text;
                             final email = _emailController.text;
                             final password = _passwordController.text;
-                            if (name.isEmpty) {
+                            if (name.isEmpty || email.isEmpty || password.isEmpty) {
+                              if (name.isEmpty) {
+                                setState(() {
+                                  _nameErrorText = 'Campo obrigatório';
+                                });
+                              } else if (email.isEmpty) {
+                                setState(() {
+                                  _emailErrorText = 'Campo obrigatório';
+                                });
+                              } else if (password.isEmpty) {
+                                setState(() {
+                                  _passwordErrorText = 'Campo obrigatório';
+                                });
+                              }
                               setState(() {
-                                _nameErrorText = 'Campo obrigatório';
+                                _cadastrando = false;
                               });
-                              return;
-                            } else if (name.length < 3) {
-                              setState(() {
-                                _nameErrorText = 'Campo nome deve conter no mínimo 3 letras';
-                              });
-                              return;
-                            } else if (email.isEmpty) {
-                              setState(() {
-                                _emailErrorText = 'Campo obrigatório';
-                              });
-                              return;
-                            } else if (password.isEmpty) {
-                              setState(() {
-                                _passwordErrorText = 'Campo obrigatório';
-                              });
+
                               return;
                             }
-                            final cadastro = await firebaseService.createUserWithEmailAndPassword(
+                            final cadastro =
+                                await firebaseService.createUserWithEmailAndPassword(
                               name: name,
                               email: email,
                               password: password,
@@ -162,26 +146,24 @@ class _SignUpPageState extends State<SignUpPage> {
                                 setState(() {
                                   _emailErrorText = 'Esse email já existe';
                                 });
-                                break;
                               case 'invalid-email':
                                 setState(() {
                                   _emailErrorText = 'Email inválido';
                                 });
-                                break;
                               case 'weak-password':
                                 setState(() {
-                                  _passwordErrorText = 'A senha deve ter no mínimo 6 digitos';
+                                  _passwordErrorText =
+                                      'A senha deve ter no mínimo 6 digitos';
                                 });
-                                break;
                               default:
                                 {
                                   _showSuccessSnackBar();
-                                  await Future.delayed(const Duration(seconds: 1));
-                                  if (context.mounted) {
-                                    Navigator.pop(context);
-                                  }
+                                  if (context.mounted) Navigator.pop(context);
                                 }
                             }
+                            setState(() {
+                              _cadastrando = false;
+                            });
                           },
                     style: ElevatedButton.styleFrom(
                       // foregroundColor: const Color.fromARGB(255, 28, 184, 54),
@@ -202,8 +184,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: InkWell(
                     onTap: () => Navigator.pop(context),
                     child: Text(
-                      textAlign: TextAlign.center,
                       'Já tem uma conta? Faça login',
+                      textAlign: TextAlign.center,
                       style: GoogleFonts.openSans(
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
