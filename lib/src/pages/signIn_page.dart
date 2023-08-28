@@ -14,6 +14,19 @@ class _SignInPageState extends State<SignInPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   late FirebaseService firebaseService;
+  bool _cadastrando = false;
+  String _emailErrorText = '';
+  String _passwordErrorText = '';
+
+  void _showSuccessSnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Cadastrado com sucesso!'),
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     firebaseService = context.read<FirebaseService>();
@@ -104,7 +117,57 @@ class _SignInPageState extends State<SignInPage> {
                       color: Colors.black54,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    setState(() {
+                      _cadastrando = true;
+                    });
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    final email = _emailController.text;
+                    final password = _passwordController.text;
+                    if (email.isEmpty || password.isEmpty) {
+                      if (email.isEmpty) {
+                        setState(() {
+                          _emailErrorText = 'Campo obrigatório';
+                        });
+                      } else if (password.isEmpty) {
+                        setState(() {
+                          _passwordErrorText = 'Campo obrigatório';
+                        });
+                      }
+                      setState(() {
+                        _cadastrando = false;
+                      });
+
+                      return;
+                    }
+                    final register = await firebaseService.signInWithEmailAndPassword(
+                      email: email,
+                      password: password,
+                    );
+
+                    switch (register) {
+                      case 'email-already-in-use':
+                        setState(() {
+                          _emailErrorText = 'Esse email já existe';
+                        });
+                      case 'invalid-email':
+                        setState(() {
+                          _emailErrorText = 'Email inválido';
+                        });
+                      case 'weak-password':
+                        setState(() {
+                          _passwordErrorText = 'A senha deve ter no mínimo 6 digitos';
+                        });
+                      default:
+                        {
+                          _showSuccessSnackBar();
+                          if (context.mounted) Navigator.pop(context);
+                        }
+                    }
+                    setState(() {
+                      _cadastrando = false;
+                    });
+                  },
                 ),
               ),
               const Spacer(),
