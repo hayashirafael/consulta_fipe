@@ -140,6 +140,7 @@ class _SignInPageState extends State<SignInPage> {
 
                       return;
                     }
+
                     final register = await firebaseService.signInWithEmailAndPassword(
                       email: email,
                       password: password,

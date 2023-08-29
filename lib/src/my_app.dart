@@ -1,5 +1,5 @@
 import 'package:consulta_fipe/src/pages/signIn_page.dart';
-import 'package:consulta_fipe/src/pages/signUp_page.dart';
+import 'package:consulta_fipe/src/pages/sign_up/sign_up_page.dart';
 import 'package:consulta_fipe/src/services/firebase_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
