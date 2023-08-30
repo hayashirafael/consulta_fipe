@@ -1,7 +1,7 @@
 import 'package:consulta_fipe/src/features/auth/data/services/firebase_auth_service.dart';
 import 'package:consulta_fipe/src/features/auth/interactor/blocs/auth_bloc.dart';
 import 'package:consulta_fipe/src/features/auth/interactor/services/auth_service.dart';
-import 'package:consulta_fipe/src/features/auth/ui/pages/home_page.dart';
+import 'package:consulta_fipe/src/features/home/pages/home_page.dart';
 import 'package:consulta_fipe/src/features/auth/ui/pages/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_modular/flutter_modular.dart';
