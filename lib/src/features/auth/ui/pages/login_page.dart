@@ -1,8 +1,9 @@
 import 'package:consulta_fipe/src/features/auth/interactor/blocs/auth_bloc.dart';
 import 'package:consulta_fipe/src/features/auth/interactor/events/auth_event.dart';
 import 'package:consulta_fipe/src/features/auth/interactor/states/auth_state.dart';
+import 'package:consulta_fipe/src/features/auth/ui/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginPage extends StatefulWidget {
@@ -18,9 +19,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.watch<AuthBloc>();
-    final state = bloc.state;
-    final bool isLoading = state is LoadingAuthState;
+    final AuthBloc bloc = BlocProvider.of<AuthBloc>(context);
+    final AuthState state = bloc.state;
+    bool isLoading = state is LoadingAuthState;
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 16, 23, 58),
       body: Center(
@@ -60,74 +61,58 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
               const SizedBox(height: 30),
-              TextField(
+              // BlocBuilder<AuthBloc, AuthState>(
+              //   builder: (context, state) {
+              //   },
+                
+              // ),
+              BlocListener(listener: )
+              TextFieldWidget(
                 enabled: !isLoading,
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.email_outlined, size: 35),
-                  focusColor: Colors.white,
-                  labelText: 'Email',
-                  labelStyle: TextStyle(
-                    color: Colors.white60,
-                  ),
-                ),
+                decorationLabelText: 'Email',
+                prefixIcon: const Icon(Icons.email_outlined, size: 35),
               ),
-              const SizedBox(height: 5),
-              TextField(
+              TextFieldWidget(
                 enabled: !isLoading,
                 controller: _passwordController,
+                decorationLabelText: 'Password',
                 obscureText: true,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.lock_outline, size: 35),
-                  labelText: 'Senha',
-                  labelStyle: TextStyle(
-                    color: Colors.white60,
-                  ),
-                ),
+                prefixIcon: const Icon(Icons.lock_outline, size: 35),
               ),
-              const SizedBox(height: 10),
               const Text(
                 'Esqueceu a senha?',
                 style: TextStyle(color: Colors.white),
               ),
               const SizedBox(height: 40),
-              if (isLoading)
-                const CircularProgressIndicator(
-                  color: Colors.brown,
-                ),
-              if (!isLoading)
-                SizedBox(
-                  width: 200,
-                  height: 50,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      // foregroundColor: const Color.fromARGB(255, 28, 184, 54),
-                      backgroundColor: Colors.greenAccent,
-                    ),
-                    child: Text(
-                      'Entrar',
-                      style: GoogleFonts.openSans(
-                        fontSize: 25,
-                        color: Colors.black54,
-                      ),
-                    ),
-                    onPressed: () async {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                      final String email = _emailController.text;
-                      final String password = _passwordController.text;
-                      final LoginAuthEvent event = LoginAuthEvent(
-                        email: email,
-                        password: password,
-                      );
-                      bloc.add(event);
-                      setState(() {});
-                    },
+              SizedBox(
+                width: 200,
+                height: 50,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    // foregroundColor: const Color.fromARGB(255, 28, 184, 54),
+                    backgroundColor: Colors.greenAccent,
                   ),
+                  child: Text(
+                    'Entrar',
+                    style: GoogleFonts.openSans(
+                      fontSize: 25,
+                      color: Colors.black54,
+                    ),
+                  ),
+                  onPressed: () async {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    final String email = _emailController.text;
+                    final String password = _passwordController.text;
+                    final LoginAuthEvent event = LoginAuthEvent(
+                      email: email,
+                      password: password,
+                    );
+                    bloc.add(event);
+                  },
                 ),
+              ),
               const Spacer(),
               Text(
                 'Não tem uma conta?',
