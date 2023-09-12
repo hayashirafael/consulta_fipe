@@ -1,4 +1,7 @@
+import 'package:consulta_fipe/src/features/auth/interactor/blocs/auth_bloc.dart';
+import 'package:consulta_fipe/src/features/auth/interactor/events/auth_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -24,6 +27,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    var bloc = context.watch<AuthBloc>((bloc) => bloc.stream);
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 16, 23, 58),
       body: Center(
@@ -96,7 +100,16 @@ class _RegisterPageState extends State<RegisterPage> {
                   width: 200,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      String email = _emailController.text;
+                      String password = _passwordController.text;
+                      String name = _nameController.text;
+                      bloc.add(RegisterAuthEvent(
+                        name: name,
+                        email: email,
+                        password: password,
+                      ));
+                    },
                     style: ElevatedButton.styleFrom(
                       // foregroundColor: const Color.fromARGB(255, 28, 184, 54),
                       backgroundColor: Colors.greenAccent,
@@ -114,7 +127,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 SizedBox(
                   width: 180,
                   child: InkWell(
-                    // onTap: () => Navigator.pop(context),
+                    onTap: () => Modular.to.navigate('/auth/login'),
                     child: Text(
                       'Já tem uma conta? Faça login',
                       textAlign: TextAlign.center,
