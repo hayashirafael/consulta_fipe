@@ -21,6 +21,18 @@ class FirebaseAuthService implements AuthService {
       } else {
         return const LogoutAuthState();
       }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'wrong-password') {
+        return const ErrorAuthState(passwordError: 'Senha incorreta');
+      } else if (e.code == 'invalid-email') {
+        return const ErrorAuthState(emailError: 'Email inválido');
+      } else if (e.code == 'user-not-found') {
+        return const ErrorAuthState(emailError: 'Email inválido');
+      } else if (e.code == 'user-disabled') {
+        return const ErrorAuthState(emailError: 'Conta desabilitada');
+      } else {
+        return const ErrorAuthState();
+      }
     } catch (e) {
       return const LogoutAuthState();
     }
@@ -47,7 +59,7 @@ class FirebaseAuthService implements AuthService {
         password: password,
       );
       await result.user?.updateDisplayName(name);
-      return const LogoutAuthState();
+      return const SuccessfulRegistrationAuthState();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         return const ErrorAuthState(emailError: 'Email já existe');

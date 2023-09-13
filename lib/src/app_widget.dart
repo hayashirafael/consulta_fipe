@@ -19,13 +19,9 @@ class _AppWidgetState extends State<AppWidget> {
     super.initState();
     _subscription = context.read<AuthBloc>().stream.listen((state) {
       if (state is LoggedAuthState) {
-        print('passou');
         Modular.to.navigate('/home/');
-      } else if (state is LogoutAuthState) {
-        print('passou');
+      } else if (state is LogoutAuthState || state is SuccessfulRegistrationAuthState) {
         Modular.to.navigate('/auth/login');
-      } else {
-        print('sss');
       }
     });
   }
