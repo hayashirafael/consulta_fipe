@@ -17,15 +17,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-
-  void _showSuccessSnackBar() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Cadastrado com sucesso!'),
-        backgroundColor: Colors.green,
-      ),
-    );
-  }
+  // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +27,7 @@ class _RegisterPageState extends State<RegisterPage> {
     bool isError = state is ErrorAuthState;
 
     return Scaffold(
+      // key: _scaffoldKey,
       backgroundColor: const Color.fromARGB(255, 16, 23, 58),
       body: Center(
         child: Padding(
@@ -60,7 +53,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   decorationLabelText: 'Nome',
                   prefixIcon: const Icon(Icons.person_2_outlined, size: 35),
                 ),
-                const SizedBox(height: 5),
                 TextFieldWidget(
                   enabled: !isLoading,
                   controller: _emailController,
@@ -69,7 +61,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   prefixIcon: const Icon(Icons.email_outlined, size: 35),
                   errorText: isError ? state.emailError : null,
                 ),
-                const SizedBox(height: 5),
                 TextFieldWidget(
                   enabled: !isLoading,
                   obscureText: true,
@@ -125,11 +116,31 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ),
+                StreamBuilder(
+                  stream: bloc.stream,
+                  builder: (context, snapshot) {
+                    if (snapshot.data is SuccessfulRegistrationAuthState) {
+                      _showSuccessSnackBar();
+                    }
+                    return Container();
+                  },
+                )
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  void _showSuccessSnackBar() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Cadastrado com sucesso!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    });
   }
 }

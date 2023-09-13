@@ -20,8 +20,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final bloc = context.watch<AuthBloc>((bloc) => bloc.stream);
-    final AuthState state = bloc.state;
+    AuthState state = bloc.state;
     bool isLoading = state is LoadingAuthState;
+    bool isError = state is ErrorAuthState;
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 16, 23, 58),
       body: Center(
@@ -63,6 +64,7 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 30),
               TextFieldWidget(
                 enabled: !isLoading,
+                errorText: isError ? state.emailError : null,
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 decorationLabelText: 'Email',
@@ -70,6 +72,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               TextFieldWidget(
                 enabled: !isLoading,
+                errorText: isError ? state.passwordError : null,
                 controller: _passwordController,
                 decorationLabelText: 'Password',
                 obscureText: true,

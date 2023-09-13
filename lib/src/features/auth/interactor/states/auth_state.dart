@@ -10,6 +10,10 @@ class LoggedAuthState implements AuthState {
   const LoggedAuthState(this.user);
 }
 
+class SuccessfulRegistrationAuthState implements AuthState {
+  const SuccessfulRegistrationAuthState();
+}
+
 class ErrorAuthState implements AuthState {
   final String? emailError;
   final String? passwordError;
