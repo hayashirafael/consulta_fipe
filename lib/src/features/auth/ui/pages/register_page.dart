@@ -1,5 +1,7 @@
 import 'package:consulta_fipe/src/features/auth/interactor/blocs/auth_bloc.dart';
 import 'package:consulta_fipe/src/features/auth/interactor/events/auth_event.dart';
+import 'package:consulta_fipe/src/features/auth/interactor/states/auth_state.dart';
+import 'package:consulta_fipe/src/features/auth/ui/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,6 +30,10 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     var bloc = context.watch<AuthBloc>((bloc) => bloc.stream);
+    AuthState state = bloc.state;
+    bool isLoading = state is LoadingAuthState;
+    bool isError = state is ErrorAuthState;
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 16, 23, 58),
       body: Center(
@@ -46,54 +52,32 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 const SizedBox(height: 60),
-                TextField(
-                  style: const TextStyle(
-                    color: Colors.white,
-                  ),
+                TextFieldWidget(
+                  enabled: !isLoading,
                   controller: _nameController,
+                  errorText: isError ? state.nameError : null,
                   keyboardType: TextInputType.name,
-                  decoration: const InputDecoration(
-                    // errorText: _nameErrorText.isNotEmpty ? _nameErrorText : null,
-                    prefixIcon: Icon(Icons.person_2_outlined, size: 35),
-                    focusColor: Colors.white,
-                    labelText: 'Nome',
-                    labelStyle: TextStyle(
-                      color: Colors.white60,
-                    ),
-                  ),
+                  decorationLabelText: 'Nome',
+                  prefixIcon: const Icon(Icons.person_2_outlined, size: 35),
                 ),
                 const SizedBox(height: 5),
-                TextField(
-                  style: const TextStyle(
-                    color: Colors.white,
-                  ),
+                TextFieldWidget(
+                  enabled: !isLoading,
                   controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    // errorText: _emailErrorText.isNotEmpty ? _emailErrorText : null,
-                    prefixIcon: Icon(Icons.email_outlined, size: 35),
-                    focusColor: Colors.white,
-                    labelText: 'Email',
-                    labelStyle: TextStyle(
-                      color: Colors.white60,
-                    ),
-                  ),
+                  keyboardType: TextInputType.name,
+                  decorationLabelText: 'Email',
+                  prefixIcon: const Icon(Icons.email_outlined, size: 35),
+                  errorText: isError ? state.emailError : null,
                 ),
                 const SizedBox(height: 5),
-                TextField(
-                  controller: _passwordController,
-                  style: const TextStyle(
-                    color: Colors.white,
-                  ),
+                TextFieldWidget(
+                  enabled: !isLoading,
                   obscureText: true,
-                  decoration: const InputDecoration(
-                    // errorText: _passwordErrorText.isNotEmpty ? _passwordErrorText : null,
-                    prefixIcon: Icon(Icons.lock_outline, size: 35),
-                    labelText: 'Senha',
-                    labelStyle: TextStyle(
-                      color: Colors.white60,
-                    ),
-                  ),
+                  controller: _passwordController,
+                  keyboardType: TextInputType.name,
+                  decorationLabelText: 'Password',
+                  prefixIcon: const Icon(Icons.lock_outline, size: 35),
+                  errorText: isError ? state.passwordError : null,
                 ),
                 const SizedBox(height: 40),
                 SizedBox(
@@ -124,21 +108,23 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                SizedBox(
-                  width: 180,
-                  child: InkWell(
-                    onTap: () => Modular.to.navigate('/auth/login'),
-                    child: Text(
-                      'Já tem uma conta? Faça login',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.openSans(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 17,
+                if (isLoading) const CircularProgressIndicator(),
+                if (!isLoading)
+                  SizedBox(
+                    width: 180,
+                    child: InkWell(
+                      onTap: () => Modular.to.navigate('/auth/login'),
+                      child: Text(
+                        'Já tem uma conta? Faça login',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.openSans(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 17,
+                        ),
                       ),
                     ),
                   ),
-                ),
               ],
             ),
           ),

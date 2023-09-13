@@ -27,12 +27,6 @@ class FirebaseAuthService implements AuthService {
   }
 
   @override
-  Future<AuthState> logout() async {
-    await firebaseAuth.signOut();
-    return const LogoutAuthState();
-  }
-
-  @override
   AuthState getUser() {
     final user = firebaseAuth.currentUser;
     if (user != null) {
@@ -43,8 +37,35 @@ class FirebaseAuthService implements AuthService {
   }
 
   @override
-  Future<AuthState> register({required name, required String email, required String password}) {
-    // TODO: implement register
-    throw UnimplementedError();
+  Future<AuthState> register({required String name, required String email, required String password}) async {
+    try {
+      if (name.isEmpty) {
+        return const ErrorAuthState(nameError: 'Nome inválido');
+      }
+      final result = await firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      await result.user?.updateDisplayName(name);
+      return const LogoutAuthState();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        return const ErrorAuthState(emailError: 'Email já existe');
+      } else if (e.code == 'invalid-email') {
+        return const ErrorAuthState(emailError: 'Email inválido');
+      } else if (e.code == 'weak-password') {
+        return const ErrorAuthState(passwordError: 'Senha fraca');
+      } else {
+        return const ErrorAuthState();
+      }
+    } catch (e) {
+      return const ErrorAuthState();
+    }
+  }
+
+  @override
+  Future<AuthState> logout() async {
+    await firebaseAuth.signOut();
+    return const LogoutAuthState();
   }
 }

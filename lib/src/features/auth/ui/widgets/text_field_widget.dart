@@ -11,6 +11,7 @@ class TextFieldWidget extends StatelessWidget {
   final double? height;
   final EdgeInsetsGeometry? padding;
   final bool? obscureText;
+  final String? errorText;
 
   const TextFieldWidget({
     Key? key,
@@ -23,6 +24,7 @@ class TextFieldWidget extends StatelessWidget {
     this.height,
     this.padding,
     this.obscureText,
+    this.errorText,
   }) : super(key: key);
 
   @override
@@ -43,6 +45,7 @@ class TextFieldWidget extends StatelessWidget {
               controller: controller,
               keyboardType: keyboardType,
               decoration: InputDecoration(
+                errorText: errorText,
                 prefixIcon: prefixIcon,
                 focusColor: Colors.white,
                 labelText: decorationLabelText,

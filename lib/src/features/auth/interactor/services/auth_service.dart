@@ -6,7 +6,7 @@ abstract interface class AuthService {
     required String password,
   });
   Future<AuthState> register({
-    required name,
+    required String name,
     required String email,
     required String password,
   });
