@@ -15,19 +15,21 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var bloc = context.watch<AuthBloc>((bloc) => bloc.stream);
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('oi'),
-            ElevatedButton(
-              onPressed: () {
-                bloc.add(LogoutAuthEvent());
-              },
-              child: const Text('Logout'),
-            )
-          ],
-        ),
+      appBar: AppBar(
+        title: const Text('Home'),
+        centerTitle: true,
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('oi'),
+          ElevatedButton(
+            onPressed: () {
+              bloc.add(LogoutAuthEvent());
+            },
+            child: const Text('Logout'),
+          )
+        ],
       ),
     );
   }
