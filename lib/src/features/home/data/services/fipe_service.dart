@@ -1,36 +1,54 @@
-import 'package:consulta_fipe/src/features/home/interactor/entities/model_vehicle_entity.dart';
-import 'package:consulta_fipe/src/features/home/interactor/entities/vehicle_entity.dart';
-import 'package:consulta_fipe/src/features/home/interactor/enums/vehicle.dart';
+import 'package:consulta_fipe/src/features/home/interactor/enums/vehicle_type.dart';
 import 'package:consulta_fipe/src/features/home/interactor/services/fipe_service.dart';
+import 'package:consulta_fipe/src/features/home/data/models/code_vehicle_model.dart';
+import 'package:dio/dio.dart';
 
 class FipeService implements IFipeService {
+  final Dio dio;
+  final String url = 'https://parallelum.com.br/fipe/api/v1/';
+
+  FipeService(this.dio);
+
   @override
-  Future<List<ModelVehicleEntity>> fetchBrandVehicle({required String vehicleBrand}) {
-    // TODO: implement fetchBrandVehicle
+  Future<List<CodeVehicleModel>> getBrandVehicle({required VehicleType vehicle}) async {
+    final result = await dio.get('$url${vehicle.value}/marcas');
+    var jsonToList = result.data as List;
+    var list = jsonToList
+        .map((e) => CodeVehicleModel(
+              code: e['codigo'],
+              name: e['nome'],
+            ))
+        .toList();
+    return list;
+  }
+
+  @override
+  Future<List<CodeVehicleModel>> getModelVehicle({
+    required VehicleType vehicle,
+    required String vehicleBrand,
+  }) {
+    // TODO: implement getModelVehicle
     throw UnimplementedError();
   }
 
   @override
-  Future<List<ModelVehicleEntity>> fetchModelVehicle({required String vehicleModel}) {
-    // TODO: implement fetchModelVehicle
+  Future<List<CodeVehicleModel>> getVehicle({
+    required VehicleType vehicle,
+    required String vehicleBrand,
+    required String vehicleModel,
+    required String vehicleYear,
+  }) {
+    // TODO: implement getVehicle
     throw UnimplementedError();
   }
 
   @override
-  Future<List<ModelVehicleEntity>> fetchTypeVehicle({required IVehicle vehicle}) {
-    // TODO: implement fetchTypeVehicle
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<VehicleEntity> fetchVehicle({required String vehicleYear}) {
-    // TODO: implement fetchVehicle
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<ModelVehicleEntity>> fetchYearVehicle({required String vehicleYear}) {
-    // TODO: implement fetchYearVehicle
+  Future<List<CodeVehicleModel>> getYearVehicle({
+    required VehicleType vehicle,
+    required String vehicleBrand,
+    required String vehicleModel,
+  }) {
+    // TODO: implement getYearVehicle
     throw UnimplementedError();
   }
 }

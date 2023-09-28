@@ -116,7 +116,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ),
-                StreamBuilder(
+                StreamBuilder<AuthState>(
                   stream: bloc.stream,
                   builder: (context, snapshot) {
                     if (snapshot.data is SuccessfulRegistrationAuthState) {

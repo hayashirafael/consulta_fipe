@@ -1,25 +1,26 @@
-import 'package:consulta_fipe/src/features/home/interactor/entities/model_vehicle_entity.dart';
-import 'package:consulta_fipe/src/features/home/interactor/entities/vehicle_entity.dart';
-import 'package:consulta_fipe/src/features/home/interactor/enums/vehicle.dart';
+import 'package:consulta_fipe/src/features/home/interactor/enums/vehicle_type.dart';
+import 'package:consulta_fipe/src/features/home/data/models/code_vehicle_model.dart';
 
 abstract class IFipeService {
-  Future<List<ModelVehicleEntity>> fetchTypeVehicle({
-    required IVehicle vehicle,
+  Future<List<CodeVehicleModel>> getBrandVehicle({
+    required VehicleType vehicle,
   });
 
-  Future<List<ModelVehicleEntity>> fetchBrandVehicle({
+  Future<List<CodeVehicleModel>> getModelVehicle({
+    required VehicleType vehicle,
     required String vehicleBrand,
   });
 
-  Future<List<ModelVehicleEntity>> fetchModelVehicle({
+  Future<List<CodeVehicleModel>> getYearVehicle({
+    required VehicleType vehicle,
+    required String vehicleBrand,
     required String vehicleModel,
   });
 
-  Future<List<ModelVehicleEntity>> fetchYearVehicle({
-    required String vehicleYear,
-  });
-
-  Future<VehicleEntity> fetchVehicle({
+  Future<List<CodeVehicleModel>> getVehicle({
+    required VehicleType vehicle,
+    required String vehicleBrand,
+    required String vehicleModel,
     required String vehicleYear,
   });
 }
