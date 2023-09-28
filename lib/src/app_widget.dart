@@ -34,7 +34,7 @@ class _AppWidgetState extends State<AppWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Modular.setInitialRoute('/auth/login');
+    Modular.setInitialRoute('/home/');
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: Modular.routerConfig,
